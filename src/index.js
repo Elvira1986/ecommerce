@@ -8,6 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import { UserProvider } from "./context/user.context";
 import "./index.scss";
 import { render } from "@testing-library/react";
+import { ProductProvider } from "./context/products.context";
 
 const rootElement = document.getElementById("root");
 
@@ -15,7 +16,9 @@ render(
   <React.StrictMode>
     <BrowserRouter>
       <UserProvider>
-        <App />
+        <ProductProvider>
+          <App />
+        </ProductProvider>
       </UserProvider>
     </BrowserRouter>
   </React.StrictMode>,
