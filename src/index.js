@@ -6,9 +6,11 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { UserProvider } from "./context/user.context";
-import "./index.scss";
+
 import { render } from "@testing-library/react";
 import { ProductProvider } from "./context/products.context";
+import { CartProvider } from "./context/cart.context";
+import "./index.scss";
 
 const rootElement = document.getElementById("root");
 
@@ -17,7 +19,9 @@ render(
     <BrowserRouter>
       <UserProvider>
         <ProductProvider>
-          <App />
+          <CartProvider>
+            <App />
+          </CartProvider>
         </ProductProvider>
       </UserProvider>
     </BrowserRouter>
