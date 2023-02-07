@@ -79,6 +79,7 @@ export const createUserDocumentFromAuth = async (
   if (!userAuth) return;
 
   const userDocRef = doc(db, "users", userAuth.uid);
+
   const userSnapshot = await getDoc(userDocRef);
 
   // if user data exists
@@ -97,7 +98,7 @@ export const createUserDocumentFromAuth = async (
       console.log("error creating the user", error.message);
     }
   }
-  return userDocRef;
+  return userSnapshot;
 };
 
 export const createAuthWithEmailAndPassword = async (email, password) => {
@@ -114,3 +115,16 @@ export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubsribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubsribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
+};
