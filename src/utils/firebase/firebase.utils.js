@@ -18,20 +18,17 @@ import {
   writeBatch,
   query,
   getDocs,
-  QuerySnapshot,
 } from "firebase/firestore";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDPNaIFY0EfSiHp9PjWdD0oCZInuksD1cM",
-  authDomain: "ecommerce-db-8ed32.firebaseapp.com",
-  projectId: "ecommerce-db-8ed32",
-  storageBucket: "ecommerce-db-8ed32.appspot.com",
-  messagingSenderId: "354589785237",
-  appId: "1:354589785237:web:7e75a16e12fe5a3c8e6f9c",
+  apiKey: "AIzaSyDDU4V-_QV3M8GyhC9SVieRTDM4dbiT0Yk",
+  authDomain: "crwn-clothing-db-98d4d.firebaseapp.com",
+  projectId: "crwn-clothing-db-98d4d",
+  storageBucket: "crwn-clothing-db-98d4d.appspot.com",
+  messagingSenderId: "626766232035",
+  appId: "1:626766232035:web:506621582dab103a4d08d6",
 };
 
-// Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider();
@@ -50,7 +47,8 @@ export const db = getFirestore();
 
 export const addCollectionAndDocuments = async (
   collectionKey,
-  objectsToAdd
+  objectsToAdd,
+  field
 ) => {
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
@@ -82,7 +80,6 @@ export const createUserDocumentFromAuth = async (
 
   const userSnapshot = await getDoc(userDocRef);
 
-  // if user data exists
   if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
@@ -98,16 +95,19 @@ export const createUserDocumentFromAuth = async (
       console.log("error creating the user", error.message);
     }
   }
+
   return userSnapshot;
 };
 
-export const createAuthWithEmailAndPassword = async (email, password) => {
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
+
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
 export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
+
   return await signInWithEmailAndPassword(auth, email, password);
 };
 
@@ -118,10 +118,10 @@ export const onAuthStateChangedListener = (callback) =>
 
 export const getCurrentUser = () => {
   return new Promise((resolve, reject) => {
-    const unsubsribe = onAuthStateChanged(
+    const unsubscribe = onAuthStateChanged(
       auth,
       (userAuth) => {
-        unsubsribe();
+        unsubscribe();
         resolve(userAuth);
       },
       reject
